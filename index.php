@@ -1,31 +1,42 @@
 <?php
 require 'vendor/autoload.php';
-if (isset($_POST['authKey']) && ($_POST['authKey'] == "abc")) {
-//if (1) {
+if (isset($_POST['authKey']) && ($_POST['authKey'] == "70Zw2bGbxoKCgCiStIo1xM")) {
     $stripe = new \Stripe\StripeClient('sk_test_51NeD8dKOmnZTt71uroc70Zw2bGbxoKCgCiStIo1xMldRfCrAPrbEHkMitQSmi7nHuJT7y4BSVxNvxI4nUWrO2YnO00uCvmGiKX');
+
+    $amount = $_POST['amount'];
+    $customerName = $_POST['customerName'];
+    $line = $_POST['$line'];
+    $postalCode = $_POST['$postalCode'];
+    $city = $_POST['$city'];
+    $state = $_POST['$state'];
+    $country = $_POST['$country'];
+    $currency = $_POST['$currency'];
+    $description = $_POST['$description'];
+
 
 // Use an existing Customer ID if this is a returning customer.
     $customer = $stripe->customers->create(
         [
-            'name' => 'Lincon',
+            'name' => $customerName,
             'address' => [
-                'line1' => 'Demo',
-                'postal_code' => '6100',
-                'city' => 'City',
-                'state' => 'State',
-                'country' => 'Country',
+                'line1' => $line,
+                'postal_code' => $postalCode,
+                'city' => $city,
+                'state' => $state,
+                'country' => $country,
             ]
         ]
     );
+
     $ephemeralKey = $stripe->ephemeralKeys->create([
         'customer' => $customer->id,
     ], [
         'stripe_version' => '2022-08-01',
     ]);
     $paymentIntent = $stripe->paymentIntents->create([
-        'amount' => 1099,
-        'currency' => 'eur',
-        'description' => 'Test',
+        'amount' => $amount,
+        'currency' => $currency,
+        'description' => $description,
         'customer' => $customer->id,
         'automatic_payment_methods' => [
             'enabled' => 'true',
