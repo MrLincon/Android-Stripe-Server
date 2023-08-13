@@ -10,9 +10,7 @@ if (isset($_POST['authKey']) && ($_POST['authKey'] == "70Zw2bGbxoKCgCiStIo1xM"))
     $city = $_POST['$city'];
     $state = $_POST['$state'];
     $country = $_POST['$country'];
-    $currency = $_POST['$currency'];
     $description = $_POST['$description'];
-
 
 // Use an existing Customer ID if this is a returning customer.
     $customer = $stripe->customers->create(
@@ -35,7 +33,7 @@ if (isset($_POST['authKey']) && ($_POST['authKey'] == "70Zw2bGbxoKCgCiStIo1xM"))
     ]);
     $paymentIntent = $stripe->paymentIntents->create([
         'amount' => $amount,
-        'currency' => $currency,
+        'currency' => 'usd',
         'description' => $description,
         'customer' => $customer->id,
         'automatic_payment_methods' => [
